@@ -21,12 +21,14 @@ app.use(express.json());
 
 /* ---------------- MONGODB CONNECTION ---------------- */
 
-mongoose.connect("mongodb://127.0.0.1:27017/foodDeliveryDB")
-.then(() => console.log("✅ MongoDB Connected"))
-.catch(err => {
-console.error("❌ MongoDB Connection Error:", err);
-process.exit(1);
-});
+mongoose.connect("mongodb+srv://admin:sankar2002@cluster0.nusaags.mongodb.net/fooddb")
+  .then(() => {
+    console.log("MongoDB Connected");
+  })
+  .catch((err) => {
+    console.error("❌ MongoDB Connection Error:", err);
+    process.exit(1);
+  });
 
 /* ---------------- SCHEMAS ---------------- */
 
