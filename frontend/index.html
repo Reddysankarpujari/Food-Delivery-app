@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reddy's Kitchen | Food Delivery App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- CONNECT CSS -->
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="images/generated-image.png">
+</head>
+
+<body>
+
+<div class="app-container">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+
+  <div class="sidebar-top">
+
+    <div class="brand-row">
+
+      <div class="brand-avatar">
+  <img src="images/generated-image.png" alt="Restaurant Logo" loading="lazy">
+</div>
+
+      <div class="brand-text">
+        <div class="brand-main">Reddy's</div>
+        <div class="brand-sub">Kitchen</div>
+      </div>
+
+    </div>
+
+    <div class="brand-tagline">
+      Flash Food Delivery - Piler
+    </div>
+
+  </div>
+
+  <div class="sidebar-nav">
+
+    <!-- NAVIGATION -->
+
+    <div class="nav-item active" data-page="home">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </div>
+
+    <div class="nav-item" data-page="restaurants">
+      <i class="fas fa-utensils"></i>
+      <span>Restaurants</span>
+    </div>
+
+    <div class="nav-item" data-page="cart">
+      <i class="fas fa-shopping-cart"></i>
+      <span>Cart (<span id="cart-count">0</span>)</span>
+    </div>
+
+    <div class="nav-item" data-page="orders">
+      <i class="fas fa-list"></i>
+      <span>Orders</span>
+    </div>
+
+    <div class="nav-item" data-page="order-history">
+      <i class="fas fa-clock-rotate-left"></i>
+      <span>Order History</span>
+    </div>
+
+    <div class="nav-item" data-page="support">
+      <i class="fas fa-headset"></i>
+      <span>Support</span>
+    </div>
+    <div class="nav-item" id="login-nav" onclick="openLogin()">
+      <i class="fas fa-right-to-bracket"></i>
+      <span>Login</span>
+    </div>
+
+    <div class="nav-item" id="logout-nav" onclick="logoutUser()" style="display:none;">
+      <i class="fas fa-right-from-bracket"></i>
+      <span>Logout</span>
+    </div>
+
+  </div>
+
+</nav>
+
+
+<!-- FLOATING CART -->
+<div id="floating-cart" class="floating-cart" onclick="showPage('cart')">
+  <span id="floating-cart-text">0 items | ₹0</span>
+  <span>View Cart →</span>
+</div>
+
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<header class="top-bar">
+
+  <!-- MOBILE MENU BUTTON -->
+  <button class="menu-toggle" id="menu-toggle">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- SEARCH BAR -->
+  <div class="search-container">
+
+    <i class="fas fa-search search-icon"></i>
+
+<input 
+  type="text"
+  id="search-input"
+  class="search-input"
+  placeholder="Search..."
+  aria-label="Search food items"
+  autocomplete="off"
+>
+
+    <div id="search-suggestions" class="search-suggestions"></div>
+
+  </div>
+
+
+  <!-- PROFILE / LOGIN BUTTON -->
+  <div class="top-profile" id="top-profile">
+
+    <div class="profile-trigger">
+
+      <div class="profile-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+
+      <span id="top-profile-name">Login</span>
+
+      <i class="fas fa-chevron-down profile-arrow"></i>
+
+    </div>
+
+
+    <!-- PROFILE DROPDOWN -->
+<div id="profile-dropdown" class="profile-dropdown">
+
+  <!-- USER HEADER -->
+  <div class="profile-dropdown-header">
+
+    <div class="dropdown-avatar">
+      <i class="fas fa-user"></i>
+    </div>
+
+    <div class="dropdown-user-info">
+      <span id="dropdown-user-name">User</span>
+    </div>
+
+  </div>
+
+  <div class="profile-divider"></div>
+
+  <!-- ORDERS -->
+  <div class="profile-menu-item" onclick="showPage('orders')">
+    <i class="fas fa-box"></i>
+    <span>Orders</span>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="profile-menu-item" onclick="openProfileModal()">
+    <i class="fas fa-user"></i>
+    <span>Profile</span>
+  </div>
+
+  <!-- LOGOUT -->
+  <div class="profile-menu-item logout" onclick="logoutUser()">
+    <i class="fas fa-sign-out-alt"></i>
+    <span>Logout</span>
+  </div>
+
+</div>
+
+  </div>
+
+</header>
+
+<main>
+
+<!-- HOME PAGE -->
+
+<section id="home" class="page active">
+
+<div class="hero">
+
+<div>
+
+<h1 id="greeting-text">👋 Good Afternoon!</h1>
+
+<p>
+Order from 6 partner kitchens across Piler.
+Fresh, quick, and reliable delivery.
+</p>
+
+</div>
+
+<div class="hero-badge">
+<i class="fas fa-clock"></i> Avg 25–35 mins
+</div>
+
+</div>
+
+<div class="categories" id="categories">
+
+<div class="category active" data-category="all">
+<i class="fas fa-fire"></i>All
+</div>
+
+<div class="category" data-category="Biryani">
+<i class="fas fa-bowl-rice"></i>Biryani
+</div>
+
+<div class="category" data-category="Mandi">
+<i class="fas fa-drumstick-bite"></i>Mandi
+</div>
+
+<div class="category" data-category="FastFood">
+<i class="fas fa-burger"></i>Fast Food
+</div>
+
+<div class="category" data-category="Dessert">
+<i class="fas fa-ice-cream"></i>Desserts
+</div>
+
+<div class="category" data-category="Beverage">
+<i class="fas fa-glass-martini-alt"></i>Drinks
+</div>
+
+</div>
+
+<h2 class="section-title" id="recommended-title">Recommended for you</h2>
+
+<div class="food-grid" id="food-grid">
+<p style="color:#9ca3af;">Loading food items...</p>
+</div>
+
+</section>
+
+<!-- RESTAURANTS -->
+
+<section id="restaurants" class="page">
+
+<h2 class="section-title">All partner kitchens</h2>
+
+<div class="restaurant-grid" id="restaurant-grid"></div>
+
+</section>
+
+<!-- RESTAURANT DETAIL -->
+
+<section id="restaurant-detail" class="page">
+
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+
+<button onclick="goBackFromDetail()">
+<i class="fas fa-arrow-left"></i>
+<span>Back</span>
+</button>
+
+<h2 class="section-title" id="detail-title">
+Restaurant menu
+</h2>
+
+</div>
+
+<div id="restaurant-detail-content"></div>
+
+</section>
+
+<!-- CART -->
+
+<section id="cart" class="page">
+
+<div class="cart-container">
+
+<h2 class="section-title">Your Cart</h2>
+
+<div id="cart-items"></div>
+
+<div id="cart-summary" style="display:none;">
+
+<div class="cart-summary">
+
+<div class="summary-row">
+<span>Subtotal</span>
+<span id="subtotal">₹0</span>
+</div>
+
+<div class="summary-row">
+<span>Delivery</span>
+<span id="delivery">₹40</span>
+</div>
+
+<div class="summary-row total">
+<span>Total</span>
+<span id="total">₹40</span>
+</div>
+
+<button type="button" onclick="placeOrder()">
+Place order
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ORDERS -->
+
+<section id="orders" class="page">
+
+<h2 class="section-title">Your orders</h2>
+
+<div id="orders-list">
+  <p style="text-align:center;color:#9ca3af;">
+    No orders yet
+  </p>
+</div>
+</section>
+
+<!-- ORDER HISTORY -->
+
+<section id="order-history" class="page">
+
+<h2 class="section-title">Order history</h2>
+<div id="order-history-list">
+  <p style="text-align:center;color:#9ca3af;">
+    No past orders
+  </p>
+</div>
+
+</section>
+
+<!-- SUPPORT -->
+
+<section id="support" class="page">
+
+<h2 class="section-title">Support</h2>
+
+<p>Phone: +91 6300540661</p>
+<p>Email: reddysankar1225@gmail.com</p>
+
+</section>
+<div id="global-loader" style="display:none;text-align:center;padding:20px;">
+  <i class="fas fa-spinner fa-spin"></i> Loading...
+</div>
+</main>
+
+</div>
+
+</div>
+
+<footer class="app-footer">
+
+<div>
+© 2026 Reddy's Kitchen – Flash Food Delivery Piler
+</div>
+
+<div class="app-footer-right">
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="#"><i class="fab fa-whatsapp"></i></a>
+<a href="#"><i class="fab fa-facebook"></i></a>
+</div>
+
+</footer>
+<!-- LOGIN MODAL -->
+
+<div id="loginModal" class="login-modal">
+
+<div class="login-box">
+
+<h2>Login</h2>
+
+<label>Email</label>
+<input type="email" id="loginEmail" placeholder="Enter email" required>
+
+<label>Password</label>
+<input type="password" id="loginPassword" placeholder="Enter password" required>
+
+<button type="button" onclick="loginUser()">Login</button>
+
+<p style="text-align:center;font-size:12px;color:#666;">
+Don't have an account?
+</p>
+
+<button type="button" onclick="showSignup()">
+Create Account
+</button>
+
+<button type="button" class="secondary-btn" onclick="closeLogin()">Close</button>
+
+</div>
+
+</div>
+
+<!-- SIGNUP MODAL -->
+
+<div id="signupModal" class="login-modal">
+
+<div class="login-box">
+
+<h2>Create Account</h2>
+
+<label>Name</label>
+<input type="text" id="signupName" placeholder="Enter your name" required>
+
+<label>Email</label>
+<input type="email" id="signupEmail" placeholder="Enter email" required>
+
+<label>Password</label>
+<input type="password" id="signupPassword" placeholder="Enter password" required>
+<button type="button" onclick="registerUser()">Register</button>
+<button type="button" onclick="showLogin()">Back to Login</button>
+
+</div>
+
+</div>
+<!-- PROFILE MODAL -->
+
+<div id="profile-modal-backdrop" class="profile-modal-backdrop">
+
+<div class="profile-modal">
+
+<h2 id="profile-display-name">Profile</h2>
+
+<div class="profile-photo-area">
+
+<img id="profile-photo-preview" alt="Profile Photo">
+
+<input type="file" id="profile-photo">
+
+</div>
+
+<label>Name</label>
+<input type="text" id="profile-name" placeholder="Your name">
+
+<label>Email</label>
+<input type="email" id="profile-email" placeholder="Email" required aria-label="Profile Email">
+
+<label>Mobile</label>
+<input type="text" id="profile-mobile" placeholder="Mobile number">
+
+<div style="display:flex;gap:10px;margin-top:10px;justify-content:center">
+
+<button type="button" id="profile-save">Save</button>
+<button type="button" id="profile-cancel">Cancel</button>
+<button type="button" id="profile-close">Close</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CONNECT JAVASCRIPT -->
+<script src="script.js"></script>
+
+</body>
+</html>
