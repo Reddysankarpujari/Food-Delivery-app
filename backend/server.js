@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 
 const User = require("./models/User");
 const authMiddleware = require("./middleware/auth");
-const API_URL = "https://food-delivery-api-nhwa.onrender.com";
+const API_URL = process.env.API_URL || "https://food-delivery-api-hnwa.onrender.com/";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
