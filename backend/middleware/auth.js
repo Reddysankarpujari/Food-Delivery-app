@@ -1,31 +1,44 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = "secretkey";
+function authMiddleware(req, res, next) {
 
-function authMiddleware(req,res,next){
+  const authHeader = req.headers.authorization;
 
-const authHeader = req.headers.authorization;
+  // ✅ Check if header exists
+  if (!authHeader) {
+    return res.status(401).json({
+      message: "No token provided"
+    });
+  }
 
-if(!authHeader){
-return res.status(401).json({message:"No token provided"});
-}
+  // ✅ Check correct format (Bearer token)
+  if (!authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      message: "Invalid token format"
+    });
+  }
 
-const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1];
 
-try{
+  try {
+    // ✅ Use ENV variable (IMPORTANT FOR RENDER)
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "secretkey"
+    );
 
-const decoded = jwt.verify(token,JWT_SECRET);
+    req.user = decoded;
 
-req.user = decoded;
+    next();
 
-next();
+  } catch (err) {
 
-}catch(err){
+    console.error("JWT Error:", err.message);
 
-return res.status(403).json({message:"Invalid token"});
-
-}
-
+    return res.status(401).json({
+      message: "Token invalid or expired"
+    });
+  }
 }
 
 module.exports = authMiddleware;

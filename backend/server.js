@@ -1,3 +1,5 @@
+require("dotenv").config(); // ADD THI
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -6,28 +8,31 @@ const jwt = require("jsonwebtoken");
 
 const User = require("./models/User");
 const authMiddleware = require("./middleware/auth");
-const API_URL = process.env.API_URL || "https://food-delivery-api-hnwa.onrender.com/";
 
 const app = express();
+
+/* ✅ FIXED PORT FOR RENDER */
 const PORT = process.env.PORT || 5000;
-/* ---------------- JWT SECRET ---------------- */
 
-const JWT_SECRET = "secretkey";
+/* ✅ USE ENV VARIABLES (VERY IMPORTANT) */
+const JWT_SECRET = process.env.JWT_SECRET || "secretkey";
 
-/* ---------------- MIDDLEWARE ---------------- */
+/* ✅ FIXED CORS FOR NETLIFY */
+app.use(cors({
+  origin: "*", // or your netlify URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
-app.use(cors());
 app.use(express.json());
 
-/* ---------------- MONGODB CONNECTION ---------------- */
-const MONGO_URI = process.env.MONGO_URI || "mongodb://admin:sankar2002@ac-mif8mnm-shard-00-00.nusaqgs.mongodb.net:27017,ac-mif8mnm-shard-00-01.nusaqgs.mongodb.net:27017,ac-mif8mnm-shard-00-02.nusaqgs.mongodb.net:27017/fooddb?ssl=true&replicaSet=atlas-czhkjs-shard-0&authSource=admin&retryWrites=true&w=majority";
-
-mongoose.connect(MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => {
-    console.error("❌ MongoDB Connection Error:", err.message);
-    process.exit(1);
-  });
+/* ✅ FIXED MONGODB (USE ENV) */
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("✅ MongoDB Connected"))
+.catch(err => {
+  console.error("❌ MongoDB Error:", err.message);
+  process.exit(1);
+});
 
 /* ---------------- SCHEMAS ---------------- */
 

@@ -148,7 +148,7 @@ let currentFilter = 'all';
 let currentSearch = "";
 let currentRestaurantId = null;
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://food-delivery-api-hnwa.onrender.com/api";
 
 // ⭐ ADD THIS FUNCTION
 function saveCart(){
